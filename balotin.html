@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+
+<head>
+
+  <title>Page d'acceuil</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    function isConnected(){
+      $(".box-init").css("display", "none");
+      $(".box-vote").css("display", "initial");
+
+    }
+    
+    function connect(){
+      let mail = $("#mail").val();
+      let password = $("#pass").val();
+      $.ajax({
+        method:   "GET",
+        url:      "connection.php",
+        data:     {"mail": mail , "password" : password }
+      }).done(function(e){
+        console.log(e)
+        if(e == "Ok.")
+        isConnected()
+      if(e == "Erreur")
+        $("#message").html("<span class='ko'> Error: mail ou mot de Mot-de-passe incorrect </span> <style> span{ color : red} </style>")
+
+       }).fail(function(e) {
+        console.log(e);
+        $("#message").html("<span class='ko'> Error: network problem </span>");
+      });
+    }
+
+
+  </script>
+</head>
+<body>
+
+  
+<div class= "box-init">
+            <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt= "logo universite-paris-saclay" height="120" ></a>
+  
+            <h1> L3 Informatique </h1>
+ 
+  <div id = "formulaire"> 
+        <div>
+            <label for="mail">e-mail :</label>
+            <input type="email" id="mail" name="user_mail" placeholder="Votre é-mail ">
+        </div>
+              <div>
+                  <label for="password">Mot-de-passe :</label>
+                  <input type="password" id="pass" name="password"
+                     minlength="8" required placeholder="Votre Mot-de-passe">
+
+              </div>
+                  <div class="button">
+                          <button onclick="connect()"> Connectez-vous 
+                                </button>
+                                  <div id="message">...</div>
+                  </div>
+  </div>
+</div>
+  
+<div class= "box-vote">
+    <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt= "logo universite-paris-saclay" height="120" ></a>
+  
+        <h1> L3 Informatique </h1>
+          <div class="bu" >
+             <div class = "button-left">
+              <p><button>Crée un SCRUTIN</button>
+              </p>
+
+              <p>
+              <button>Inviter les électeurs</button>
+              </p>
+              
+              <p>
+              <button>Voter Soi-même</button>
+              </p>
+
+              <p>
+              <button>Afficher la <br> Participation</button>
+              </p>
+
+              
+              <p>
+                <button>Fermer le Scrutin</button>
+              </p>
+
+              <p>
+                <button>Détruire le scrutin</button>
+              </p>
+
+              <button>Exit</button>
+              <br>
+          </div>
+
+            <div id="ballotin" style="float:left;width:75%;">
+                    <p>La clé privée sera conservée dans VOTRE navigateur</p>
+                    <div><b>B) Question : </b></div>
+                    <textarea placeholder="Quel est votre Question?" rows="9" cols="50"></textarea>
+      
+                  <div id="message">...</div>
+            </div>
+
+            
+          
+
+</div>
+
+
+</body>
+</html>
+
