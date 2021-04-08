@@ -8,7 +8,9 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
+    let Profilename;
     autologin()
+    
 
     function isConnected() {
         $(".box-init").css("display", "none");
@@ -22,6 +24,8 @@
       let mail = localStorage.key(0)
       if(localStorage.getItem(mail)!=null){
         isConnected();
+        
+        Profilename=mail
         console.log("autooooooo")
       }else{
       console.log("no COOKKIEEE")
@@ -40,6 +44,7 @@
         console.log(e)
         if (e == "Ok."){
           locStorage(mail,password);
+          Profilename=mail
           isConnected();
         }
         if (e == "Erreur")
@@ -75,7 +80,6 @@
       document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
       evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
     }
-  
 
   </script>
 </head>
