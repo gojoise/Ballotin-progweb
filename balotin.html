@@ -11,15 +11,26 @@
     autologin()
 
     function isConnected() {
-      $(".box-init").css("display", "none");
+      
+        $(".box-init").css("display", "none");
       $(".box-vote").css("display", "initial");
-
+      console.log("login");
       // Get the element with id="defaultOpen" and click on it
       document.getElementById('defaultOpen').click();
+      
+      
     }
 
     function autologin(){
-      if(localStorage.getItem("mail")!=null) isConnected();
+      $(document).ready(function(){
+      let mail = localStorage.key(0)
+      if(localStorage.getItem(mail)!=null){
+        isConnected();
+        console.log("autooooooo")
+      }else{
+      console.log("no COOKKIEEE")
+      }
+    })
     }
 
     function connect() {
@@ -46,7 +57,9 @@
 
     function locStorage(login,pass){
       localStorage.setItem(login,pass);
-
+      console.log(login);
+      console.log("COOOOKIEEEEE")
+      //mettre une date d'expiration ?
     }
 
     /*
@@ -66,9 +79,7 @@
       document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
       evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
     }
-
-
-    
+  
 
   </script>
 </head>
