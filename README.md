@@ -4,17 +4,18 @@ Auteurs : Hamza, Mathieu
 
 ## Cahier des charges 
 
-- Votants authentifiés
-- 0 à 2 procurations
-- Liste prédéfinie de votants
-- Composition du scrutin(question/votants/réponses)
-> Permissions votant
-- consulter liste scutins accessibles ,le taux de participation et l'organisateur
+### Terminé
+- Votants authentifiés ✅
+- Composition du scrutin(question/votants/réponses) ok
 
-> Permissions organisateur
--idem + clore le scrutin créer le scrutin
+### A faire
+1) Ajouter votants
+2) Liste prédéfinie de votants
+3) Sauvegarder les scrutins
+4) Consulter les scrutins
+5) Fermer les scrutins
 
-- consulter les résultats
+
 
 ## Bonus 
 
