@@ -6,138 +6,149 @@
 
   <title>Page d'acceuil</title>
   <link rel="stylesheet" type="text/css" href="style.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript">
+    autologin()
 
-    function isConnected(){
+    function isConnected() {
       $(".box-init").css("display", "none");
       $(".box-vote").css("display", "initial");
 
       // Get the element with id="defaultOpen" and click on it
-    document.getElementById('defaultOpen').click();
-
+      document.getElementById('defaultOpen').click();
     }
 
-    function connect(){
+    function autologin(){
+      if(localStorage.getItem("mail")!=null) isConnected();
+    }
+
+    function connect() {
       let mail = $("#mail").val();
       let password = $("#pass").val();
       $.ajax({
-        method:   "GET",
-        url:      "connection.php",
-        data:     {"mail": mail , "password" : password }
-      }).done(function(e){
+        method: "GET",
+        url: "connection.php",
+        data: { "mail": mail, "password": password }
+      }).done(function (e) {
         console.log(e)
-        if(e == "Ok.")
-        isConnected()
-      if(e == "Erreur")
-        $("#message").html("<span class='ko'> Error: mail ou mot de Mot-de-passe incorrect </span> <style> span{ color : red} </style>")
+        if (e == "Ok."){
+          locStorage(mail,password);
+          isConnected();
+        }
+        if (e == "Erreur")
+          $("#message").html("<span class='ko'> Error: mail ou mot de Mot-de-passe incorrect </span> <style> span{ color : red} </style>")
 
-       }).fail(function(e) {
+      }).fail(function (e) {
         console.log(e);
         $("#message").html("<span class='ko'> Error: network problem </span>");
       });
     }
 
+    function locStorage(login,pass){
+      localStorage.setItem(login,pass);
+
+    }
+
     /*
     Inspiré de https://www.w3schools.com/howto/howto_js_vertical_tabs.asp
     */
-
-function openTab(evt, tabName) {
+    function openTab(evt, tabName) {
       var i, tabcontent, tablinks; // Création des variables 
       tabcontent = document.getElementsByClassName("tabcontent"); // On récupère les elements de la page (les contenus des tab)
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none"; // Pour tout les contenus du tab on passe l'affichage à none
       }
-    tablinks = document.getElementsByClassName("tablinks"); // on récup les boutons 
-    for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", ""); // on passe leur class active à "" 
+      tablinks = document.getElementsByClassName("tablinks"); // on récup les boutons 
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", ""); // on passe leur class active à " " 
+      }
+      //Une fois que tout est remis à 'zéro'
+      document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
+      evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
     }
-    //Une fois que tout est remis à 'zéro'
-    document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
-    evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
-  }
 
 
+    
 
   </script>
 </head>
+
 <body>
 
 
-<div class= "box-init">
-            <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt= "logo universite-paris-saclay" height="120" ></a>
+  <div class="box-init">
+    <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt="logo universite-paris-saclay"
+        height="120"></a>
 
-            <h1> L3 Informatique </h1>
+    <h1> L3 Informatique </h1>
 
-  <div id = "formulaire">
-        <div>
-            <label for="mail">e-mail :</label>
-            <input type="email" id="mail" name="user_mail" placeholder="Votre é-mail ">
-        </div>
-              <div>
-                  <label for="password">Mot-de-passe :</label>
-                  <input type="password" id="pass" name="password"
-                     minlength="8" required placeholder="Votre Mot-de-passe">
+    <div id="formulaire">
+      <div>
+        <label for="mail">e-mail :</label>
+        <input type="email" id="mail" name="user_mail" placeholder="Votre é-mail ">
+      </div>
 
-              </div>
-                  <div class="button">
-                          <button onclick="connect()"> Connectez-vous
-                                </button>
-                                  <div id="message">...</div>
-                  </div>
+      <div>
+        <label for="password">Mot-de-passe :</label>
+        <input type="password" id="pass" name="password" minlength="8" required placeholder="Votre Mot-de-passe">
+      </div>
+
+      <div class="button">
+        <button onclick="connect()"> Connectez-vous
+        </button>
+        <div id="message">...</div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class= "box-vote">
-    <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt= "logo universite-paris-saclay" height="120" ></a>
+  <div class="box-vote">
+    <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt="logo universite-paris-saclay"
+        height="120"></a>
 
     <h2>Vote en ligne</h2>
-  <p>Cliquez sur les boutons de menu à gauche !</p>
+    <p>Cliquez sur les boutons de menu à gauche !</p>
 
-  <div class="tab">
-  <button class="tablinks" onclick="openTab(event, 'Create')" id="defaultOpen">Créer</button>
-  <button class="tablinks" onclick="openTab(event, 'Invite')">Inviter</button>
-  <button class="tablinks" onclick="openTab(event, 'Vote')">Voter</button>
-  </div>
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Create')" id="defaultOpen">Créer</button>
+      <button class="tablinks" onclick="openTab(event, 'Invite')">Inviter</button>
+      <button class="tablinks" onclick="openTab(event, 'Vote')">Voter</button>
+    </div>
 
-  <div id="Create" class="tabcontent">
-    <p>La clé privée sera conservée dans VOTRE navigateur<br>
-      Vous devez garder cette page ouverte ou revenir ici<br>avec le même navigateur web pour clore le scrutin</p>
+    <div id="Create" class="tabcontent">
+      <p>La clé privée sera conservée dans VOTRE navigateur<br>
+        Vous devez garder cette page ouverte ou revenir ici<br>avec le même navigateur web pour clore le scrutin</p>
 
       <div><b>A) Organisateur : </b></div>
-  <div>
+      <div>
 
-    <input type="email" id="mail" name="user_mail" placeholder="Votre é-mail ">
-    <input type="password" id="pass" name="password"
-      minlength="8" required placeholder="Votre Mot-de-passe">
-  </div>
-
-
-
+        <input type="email" id="mail" name="user_mail" placeholder="Votre é-mail ">
+        <input type="password" id="pass" name="password" minlength="8" required placeholder="Votre Mot-de-passe">
+      </div>
 
       <div><b>B) Question : </b></div>
       <textarea placeholder="Quel est votre Question?" rows="9" cols="50"></textarea>
 
       <div><b>C) Option</b></div>
-  <input type="" name="">
-  <button onclick="maFonction()" id="test">plus</button>
+      <input type="" name="">
+      <button onclick="maFonction()" id="test">plus</button>
+    </div>
+
+    <div id="Invite" class="tabcontent">
+
+    </div>
+
+    <div id="Vote" class="tabcontent">
+      <h3>Voter</h3>
+      <p>Contenu :</p>
+      <input type="file">
+    </div>
+
+
+
+
   </div>
-
-  <div id="Invite" class="tabcontent">
-    
-  </div>
-
-  <div id="Vote" class="tabcontent">
-  <h3>Voter</h3>
-  <p>Contenu :</p>
-  <input type="file">
-  </div>
-
-
-
-
-</div>
 
 
 </body>
+
 </html>
