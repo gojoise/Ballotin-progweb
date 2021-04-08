@@ -21,11 +21,9 @@
 
     function autologin(){
       $(document).ready(function(){
-      let mail = localStorage.key(0)
-      if(localStorage.getItem(mail)!=null){
+      if(localStorage.getItem("mail")!=null){
         isConnected();
-        
-        Profilename=mail
+        Profilename=localStorage.getItem("mail")
         console.log("autooooooo")
       }else{
       console.log("no COOKKIEEE")
@@ -43,7 +41,7 @@
       }).done(function (e) {
         console.log(e)
         if (e == "Ok."){
-          locStorage(mail,password);
+          locStorage(mail);
           Profilename=mail
           isConnected();
         }
@@ -56,10 +54,15 @@
       });
     }
 
-    function locStorage(login,pass){
-      localStorage.setItem(login,pass);
-      console.log(login);
-      console.log("COOOOKIEEEEE")
+    function disconnect() {
+      $(".box-init").css("display", "initial");
+      $(".box-vote").css("display", "none");
+      localStorage.clear();
+      Profilename=null;
+    }
+
+    function locStorage(login){
+      localStorage.setItem("mail",login);
       //mettre une date d'expiration ?
     }
 
@@ -123,6 +126,7 @@
       <button class="tablinks" onclick="openTab(event, 'Create')" id="defaultOpen">Créer</button>
       <button class="tablinks" onclick="openTab(event, 'Invite')">Inviter</button>
       <button class="tablinks" onclick="openTab(event, 'Vote')">Voter</button>
+      <button class="tablinks" onclick="disconnect(event)">Se deconnecter</button>
     </div>
 
     <div id="Create" class="tabcontent">
