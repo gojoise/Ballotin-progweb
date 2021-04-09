@@ -71,8 +71,8 @@ div{
 body{
 
 	height: 100%;
-	 background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,255,239,1) 100%);
+	background: rgb(250,128,114);
+  background: linear-gradient(90deg,  rgba(250,128,114,1) 0%,  rgba(139,0,0,1) 100%);
 
 }
 h1{
@@ -155,11 +155,37 @@ body {font-family: "Lato", sans-serif;}
 }
 
 /* Style the tab content */
-.tabcontent {
+ .tabcontent {
   float: left;
   padding: 0px 12px;
   border: 1px solid #ccc;
   width: 70%;
   border-left: none;
-  height: 70%px;
+  height: 70%;
+}
+
+textarea{
+	resize: none;
+}
+
+table {
+    margin: 18px 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+table th,
+table td {
+    text-align: left;
+    padding: 6px;
+}
+
+
+.box-vote a img{
+	float: right;
+width: 150px;
+height: 100px;
+}
+
+select{
+	max-width: 100px;
 }
