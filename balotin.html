@@ -134,6 +134,10 @@
       }
     });
   };
+
+  function recupererScutin(){
+
+  }
 //zindex
 </script>
 </head>
@@ -184,12 +188,11 @@
 
         <b>A)Nom du scrutin: </b>
         <div>
-          <input type="name" id="name" name="name" placeholder="Le nom du scrutin">
+          <input type="name" id="ScrutinName" name="name" placeholder="Le nom du scrutin">
         </div><br>
 
         <div><b>B) Question : </b>
-          <textarea placeholder="Quel est votre Question?" rows="3" cols="40
-          "></textarea>
+          <textarea placeholder="Quel est votre Question?" rows="3" cols="40" id="Question"></textarea>
         </div><br>
 
         <div> <b>C) Option</b> <br>
@@ -201,6 +204,10 @@
               <td><input type="text" name="test"><input type="checkbox" name="select"></td> 
             </tr>
           </table>
+        </div>
+
+        <div class="validation">
+            <button onclick="recupererScutin()">Valider le scrutin</button>
         </div>
       </div>
 
