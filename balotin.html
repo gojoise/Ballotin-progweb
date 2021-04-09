@@ -137,13 +137,15 @@
   function recupererScutin(){
     let name = $("#ScrutinName").val();
       let ques = $("#Question").val();
-      let opt;
+      let opt = $("#option").val;
+      console.log(opt)
       $.ajax({
         method: "GET",
         url: "valid.php",
-        data: { "name": name, "question": ques, "options" : opt}
+        data: { "name": name, "question": ques,"options" : opt}
       }).done(function (e) {
         console.log(e)
+        $("#message").html("<span class='ko'> Scrutin save </span>");
       }).fail(function(e) {
         console.log(e);
         $("#message").html("<span class='ko'> Error: network problem </span>");
