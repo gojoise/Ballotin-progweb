@@ -31,10 +31,8 @@
         })
       }
 
-      function locStorage(login){
-             
+      function locStorage(login){    
       localStorage.setItem("mail",login);
-        
       //mettre une date d'expiration ?
     }
 
@@ -108,12 +106,12 @@
   }); */
 
   function addOption(){
-    var ligne = "<tr><td><input id='option' type='text' name='test'><input type='checkbox' name='select'></td><td>";
-    $("table.option").append(ligne);
+    var ligne = "<tr><td><input class='option' type='text' name='test'><input type='checkbox' name='select'></td><td>";
+    $("table.optionlist").append(ligne);
   }
 
   function delOption(){
-    $("table.option").find('input[name="select"]').each(function() {
+    $("table.optionlist").find('input[name="select"]').each(function() {
       if ($(this).is(":checked")) {
         $(this).parents("table.option tr").remove();
       }
@@ -136,20 +134,23 @@
 
   function recupererScutin(){
     let name = $("#ScrutinName").val();
-      let ques = $("#Question").val();
-      let opt = $("#option").val;
-      console.log(opt)
-      $.ajax({
-        method: "GET",
-        url: "valid.php",
-        data: { "name": name, "question": ques,"options" : opt}
-      }).done(function (e) {
-        console.log(e)
-        $("#message").html("<span class='ko'> Scrutin save </span>");
-      }).fail(function(e) {
-        console.log(e);
-        $("#message").html("<span class='ko'> Error: network problem </span>");
-      });
+    let ques = $("#Question").val();
+    let opt = []
+    var inputs = $(".option");
+    for(var i = 0; i < inputs.length; i++){
+    opt.push($(inputs[i]).val());
+    }
+    $.ajax({
+      method: "GET",
+      url: "valid.php",
+      data: { "name": name, "question": ques,"options" : opt}
+    }).done(function (e) {
+      console.log(e)
+      $("#message").html("<span class='ko'> Scrutin save </span>");
+    }).fail(function(e) {
+      console.log(e);
+      $("#message").html("<span class='ko'> Error: network problem </span>");
+    });
 
   }
 //zindex
@@ -212,10 +213,10 @@
         <div> <b>C) Option</b> <br>
           <input type="button" class="add" value="Ajouter une ligne" onclick="addOption()">
           <button type="button" class="delete" onclick="delOption()">Supprimer une ligne</button>
-          <table class="option">
+          <table class="optionlist">
             <th>Sélectionner vos Option</th>
             <tr>
-              <td><input id = "option" type="text" name="test"><input type="checkbox" name="select"></td> 
+              <td><input class = "option" type="text" name="test"><input type="checkbox" name="select"></td> 
             </tr>
           </table>
         </div>
