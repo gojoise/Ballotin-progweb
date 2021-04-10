@@ -145,8 +145,8 @@
       url: "valid.php",
       data: { "name": name, "question": ques,"options" : opt}
     }).done(function (e) {
-      console.log(e)
-      $("#message").html("<span class='ko'> Scrutin save </span>");
+      alert("Le scrutin a été enregistré")
+      location.reload();
     }).fail(function(e) {
       console.log(e);
       $("#message").html("<span class='ko'> Error: network problem </span>");
