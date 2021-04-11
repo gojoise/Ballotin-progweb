@@ -113,13 +113,13 @@
   function delOption(){
     $("table.optionlist").find('input[name="select"]').each(function() {
       if ($(this).is(":checked")) {
-        $(this).parents("table.option tr").remove();
+        $(this).parents("table.optionlist tr").remove();
       }
     });
   };
 
    function addElecteur(){
-    var ligne = "<tr><td><input type='text' name='test'><input type='checkbox' name='select'></td><td></label><select id='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>";
+    var ligne = "<tr><td><input class='electeur' type='text' name='test'><input type='checkbox' name='select'></td><td></label><select class='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>";
 
     $("table.invit").append(ligne);
   }
@@ -163,7 +163,28 @@
   }
 
   function rajoutElecteur(){
-
+    /*
+    [{nom:hamza,vote:1},...]
+    */
+   //Recupération des données dans HTML
+    let elect = []
+    var inputs = $(".electeur");
+    for(var i = 0; i < inputs.length; i++){
+    elect.push($(inputs[i]).val());
+    }
+    let procus = []
+    var selects = $(".Procuration");
+    for(var i = 0; i < selects.length; i++){
+    procus.push($(selects[i]).find(":selected").text());
+    }
+    $.ajax({
+      method: "GET",
+      url: "votants.php",
+      data: { "electeurs": elect,"procurations":procus}
+    }).done(function (e) {
+      console.log(e);
+    }).fail(function(e) {
+    });
   }
 //zindex
 </script>
@@ -249,9 +270,9 @@
               <th>Procuration</th> 
               </tr>
               <tr>
-                <td><input type="text" name="test"><input type="checkbox" name="select"></td> 
+                <td><input class="electeur" type="text" name="test"><input type="checkbox" name="select"></td> 
                 <td>
-                    <select id="Procuration">
+                    <select class="Procuration">
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
