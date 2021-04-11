@@ -143,7 +143,7 @@
     $.ajax({
       method: "GET",
       url: "valid.php",
-      data: { "name": name, "question": ques,"options" : opt}
+      data: {"profile":Profilename, "name": name, "question": ques,"options" : opt}
     }).done(function (e) {
       alert("Le scrutin a été enregistré")
       let nom = "<input type='name' id='ScrutinName' name='name' placeholder='Le nom du scrutin'><br>";
