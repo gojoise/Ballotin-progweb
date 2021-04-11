@@ -31,7 +31,7 @@
         })
       }
 
-      function locStorage(login){    
+      function locStorage(login){
       localStorage.setItem("mail",login);
       //mettre une date d'expiration ?
     }
@@ -75,14 +75,14 @@
       */
 
       function openTab(evt, tabName) {
-        var i, tabcontent, tablinks; // Création des variables 
+        var i, tabcontent, tablinks; // Création des variables
         tabcontent = document.getElementsByClassName("tabcontent"); // On récupère les elements de la page (les contenus des tab)
         for (i = 0; i < tabcontent.length; i++) {
           tabcontent[i].style.display = "none"; // Pour tout les contenus du tab on passe l'affichage à none
         }
-      tablinks = document.getElementsByClassName("tablinks"); // on récup les boutons 
+      tablinks = document.getElementsByClassName("tablinks"); // on récup les boutons
       for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", ""); // on passe leur class active à "" 
+      tablinks[i].className = tablinks[i].className.replace(" active", ""); // on passe leur class active à ""
     }
       //Une fois que tout est remis à 'zéro'
       document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
@@ -150,7 +150,7 @@
 
       let question = "<b>B) Question : </b><textarea placeholder='Quel est votre Question?' rows='3' cols='40' id='Question'></textarea>";
 
-      let option = "<b>C) Option</b> <br><input type='button' class='add' value='Ajouter une ligne' onclick='addOption()'><button type='button' class='delete' onclick='delOption()'>Supprimer une ligne</button><table class='optionlist'><th>Sélectionner vos Option</th><tr><td><input class = 'option' type='text'><input type='checkbox'></td> </tr></table>";
+      let option = "<b>C) Option</b> <br><input type='button' class='add' value='Ajouter une ligne' onclick='addOption()'><button type='button' class='delete' onclick='delOption()'>Supprimer une ligne</button><table class='optionlist'><th>Sélectionner vos Option</th><tr><td><input class='option' type='text' name='test'><input type='checkbox' name='select'></td><td> </tr></table>";
 
       $("#nom").html(nom);
       $("#question").html(question);
@@ -161,7 +161,6 @@
       $("#message").html("<span class='ko'> Error: network problem </span>");
     });
   }
-
   function rajoutElecteur(){
     /*
     [{nom:hamza,vote:1},...]
@@ -186,6 +185,44 @@
     }).fail(function(e) {
     });
   }
+// inspiré de https://stackoverflow.com/questions/19706046/how-to-read-an-external-local-json-file-in-javascript
+
+  function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+}
+
+var voteaffiche = false;
+function showVote(){
+  if(voteaffiche){}else{
+  readTextFile("scrutins.json", function(text){
+    var data = JSON.parse(text);
+    data["options"].forEach((data) =>{
+      $("#showVote").append("<input type='text' name='les_options' value ='"+data+"'readonly><br>");
+    })
+    voteaffiche = true;
+});
+}
+}
+var elecaffiche = false;
+function showElec(){
+  if(elecaffiche){}else{
+  readTextFile("scrutins.json", function(text){
+    var data = JSON.parse(text);
+    data["votants"].forEach((data) =>{
+      $("#showElec").append("<input type='text' name='les_options' value ='"+data+"'readonly><br>");
+    })
+    elecaffiche = true;
+});
+}
+}
 //zindex
 </script>
 </head>
@@ -229,7 +266,7 @@
       <button class="tablinks" onclick="openTab(event, 'Fermer scrutin')">Fermer scrutin</button>
       <button class="tablinks" onclick="disconnect(event)">Se deconnecter</button>
     </div>
-    
+
     <div id="Create" class="tabcontent">
       <p>La clé privée sera conservée dans VOTRE navigateur<br>
         Vous devez garder cette page ouverte ou revenir ici<br>avec le même navigateur web pour clore le scrutin</p>
@@ -249,7 +286,8 @@
           <table class="optionlist">
             <th>Sélectionner vos Option</th>
             <tr>
-              <td><input class = "option" type="text"><input type="checkbox" ></td> 
+              <td>
+                <input class="option" type="text" name="test"><input type="checkbox" name="select"></td>
             </tr>
           </table>
         </div>
@@ -267,10 +305,10 @@
             <table class="invit">
               <tr>
               <th>Nom</th>
-              <th>Procuration</th> 
+              <th>Procuration</th>
               </tr>
               <tr>
-                <td><input class="electeur" type="text" name="test"><input type="checkbox" name="select"></td> 
+                <td><input class="electeur" type="text" name="test"><input type="checkbox" name="select"></td>
                 <td>
                     <select class="Procuration">
                     <option value="0">0</option>
@@ -288,9 +326,16 @@
         <div id="Vote" class="tabcontent">
           <h3>Voter</h3>
           <p>Contenu :</p>
+          <div id = "showVote">
+
+          </div>
+          <button onclick="showVote()">Click pour afficher les votes</button>
         </div>
         <div id="Resultat" class="tabcontent">
-
+          <h3>Les Votants</h3>
+          <p>Contenu :</p>
+          <div id="showElec"></div>
+            <button onclick="showElec()">Afficher les participants</button>
         </div>
 
 
