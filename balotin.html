@@ -10,14 +10,14 @@
   <script type="text/javascript">
     let Profilename;
     autologin();
-    showListVot
-  ();
+    showListVot();
     function isConnected(){
       $(".box-init").css("display", "none");
       $(".box-vote").css("display", "initial");
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById('defaultOpen').click();
+
 
       }
 
@@ -157,6 +157,7 @@
       $("#nom").html(nom);
       $("#question").html(question);
       $("#opti").html(option);
+      $("#invite").click();
 
     }).fail(function(e) {
       console.log(e);
@@ -252,6 +253,11 @@ function validListVot(){
 }
 
 
+
+function closeScrutin(){
+
+
+}
 //zindex
 </script>
 </head>
@@ -289,9 +295,9 @@ function validListVot(){
 
     <div class="tab">
       <button class="tablinks" onclick="openTab(event, 'Create')" id="defaultOpen">Créer</button>
-      <button class="tablinks" onclick="openTab(event, 'Invite')">Inviter</button>
+      <button id ="invite" class="tablinks" onclick="openTab(event, 'Invite')">Inviter</button>
       <button class="tablinks" onclick="openTab(event, 'Vote')">Voter</button>
-      <button class="tablinks" onclick="openTab(event, 'Resultat')">Resultat</button>
+      <button class="tablinks" onclick="openTab(event, 'Participation')">Participation</button>
       <button class="tablinks" onclick="openTab(event, 'Fermer scrutin')">Fermer scrutin</button>
       <button class="tablinks" onclick="disconnect(event)">Se deconnecter</button>
     </div>
@@ -366,7 +372,7 @@ function validListVot(){
           </div>
           <button onclick="showVote()">Click pour afficher les votes</button>
         </div>
-        <div id="Resultat" class="tabcontent">
+        <div id="Participation" class="tabcontent">
           <h3>Les Votants</h3>
           <p>Contenu :</p>
           <div id="showElec"></div>
@@ -375,6 +381,7 @@ function validListVot(){
 
 
         <div id="Fermer scrutin" class="tabcontent">
+          <p>Etes-vous sur de vouloir fermer le scrutin</p>
 
         </div>
 
