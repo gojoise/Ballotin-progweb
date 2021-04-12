@@ -10,7 +10,8 @@
   <script type="text/javascript">
     let Profilename;
     autologin();
-    showScrutin();
+    showListVot
+  ();
     function isConnected(){
       $(".box-init").css("display", "none");
       $(".box-vote").css("display", "initial");
@@ -225,7 +226,7 @@ function showElec(){
   }
 }
 var scrutinsaffiche = false;
-function showScrutin(){
+function showListVot(){
   if(scrutinsaffiche){}else{
     readTextFile("listepredef.json", function(text){
      var data = JSON.parse(text);
@@ -238,6 +239,9 @@ function showScrutin(){
    });
   }
 }
+function validListVot()
+
+
 //zindex
 </script>
 </head>
@@ -318,7 +322,8 @@ function showScrutin(){
             <select id ="Choix">
               <option value=""></option>
             </select>
-            <button onclick="showScrutin()"> Click</button>
+            <button onclick="showListVot
+          ()"> Click</button>
           </div>
           <div> <b>C) Electeurs</b> <br>
             <input type="button" class="add" value="Ajouter une ligne" onclick="addElecteur()">
