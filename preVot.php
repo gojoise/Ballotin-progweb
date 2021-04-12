@@ -7,11 +7,8 @@ $json = json_decode($jsonstring);
 
 foreach($json as $key=>$obj){
     foreach ($obj as $arr) {
-        if(key($obj)==$name) print_r($arr);
+        if(key($obj)==$name) echo json_encode($arr);
     }
 }
-
-
-
 
 ?>
