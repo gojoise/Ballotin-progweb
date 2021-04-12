@@ -1,12 +1,18 @@
 let Profilename;
 init();
+
+
 function init() {
     autologin();
     showListVot();
+    $(document).ready(function () {
+        if(Profilename!=null){
+            votableScrutins()
+            ownedScrutins()
+            allScrutins()
+        }
+    })
 }
-
-
-
 function isConnected() {
     $(".box-init").css("display", "none");
     $(".box-vote").css("display", "initial");
@@ -30,8 +36,6 @@ function locStorage(login) {
     localStorage.setItem("mail", login);
     //mettre une date d'expiration ?
 }
-
-
 
 function connect() {
     let mail = $("#mail").val();
@@ -64,11 +68,9 @@ function disconnect() {
     location.reload();
     return false;
 }
-
 /*
 Inspiré de https://www.w3schools.com/howto/howto_js_vertical_tabs.asp
 */
-
 function openTab(evt, tabName) {
     var i, tabcontent, tablinks; // Création des variables
     tabcontent = document.getElementsByClassName("tabcontent"); // On récupère les elements de la page (les contenus des tab)
@@ -83,8 +85,6 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
     evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
 }
-
-
 /*
       $(document).ready(function() {
     $(".add").click(function() {
@@ -182,7 +182,6 @@ function rajoutElecteur() {
     });
 }
 // inspiré de https://stackoverflow.com/questions/19706046/how-to-read-an-external-local-json-file-in-javascript
-
 function readTextFile(file, callback) {
     var rawFile = new XMLHttpRequest();
     rawFile.overrideMimeType("application/json");
@@ -194,7 +193,6 @@ function readTextFile(file, callback) {
     }
     rawFile.send(null);
 }
-
 var voteaffiche = false;
 function showVote() {
     if (voteaffiche) { } else {
@@ -250,10 +248,48 @@ function validListVot() {
     }).fail(function (e) {
     });
 }
+function votableScrutins(){
+    $.ajax({
+        method: "GET",
+        url: "getScrutin.php",
+        data: { "profile": Profilename,"action" : "votable"}
+    }).done(function (e) {
+        console.log(e)
+        let array = JSON.parse(e)
+        array.forEach((elements) => {
+            $("#votable").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
+        })
+    }).fail(function (e) {
+    });
+}
+function ownedScrutins(){
+    $.ajax({
+        method: "GET",
+        url: "getScrutin.php",
+        data: { "profile": Profilename,"action" : "owner"}
+    }).done(function (e) {
+        console.log(e)
+        let array = JSON.parse(e)
+        array.forEach((elements) => {
+            $("#owned").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
+        })
+    }).fail(function (e) {
+    });
+}
 
-
-
+function allScrutins(){
+    $.ajax({
+        method: "GET",
+        url: "getScrutin.php",
+        data: { "profile": Profilename,"action" : "all"}
+    }).done(function (e) {
+        console.log(e)
+        let array = JSON.parse(e)
+        array.forEach((elements) => {
+            $("#all").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
+        })
+    }).fail(function (e) {
+    });
+}
 function closeScrutin() {
-
-
 }
