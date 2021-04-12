@@ -1,18 +1,19 @@
-  <!DOCTYPE html>
-  <meta charset="utf-8">
-  <html>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
 
-  <head>
+<head>
 
-    <title>Page d'acceuil</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      let Profilename;
-      autologin();
-      function isConnected(){
-        $(".box-init").css("display", "none");
-        $(".box-vote").css("display", "initial");
+  <title>Page d'acceuil</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    let Profilename;
+    autologin();
+    showScrutin();
+    function isConnected(){
+      $(".box-init").css("display", "none");
+      $(".box-vote").css("display", "initial");
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById('defaultOpen').click();
@@ -32,7 +33,7 @@
       }
 
       function locStorage(login){
-      localStorage.setItem("mail",login);
+        localStorage.setItem("mail",login);
       //mettre une date d'expiration ?
     }
 
@@ -118,7 +119,7 @@
     });
   };
 
-   function addElecteur(){
+  function addElecteur(){
     var ligne = "<tr><td><input class='electeur' type='text' name='test'><input type='checkbox' name='select'></td><td></label><select class='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>";
 
     $("table.invit").append(ligne);
@@ -138,12 +139,12 @@
     let opt = []
     var inputs = $(".option");
     for(var i = 0; i < inputs.length; i++){
-    opt.push($(inputs[i]).val());
+      opt.push($(inputs[i]).val());
     }
     $.ajax({
       method: "GET",
       url: "valid.php",
-      data: {"profile":Profilename, "name": name, "question": ques,"options" : opt}
+      data: { "name": name, "question": ques,"options" : opt}
     }).done(function (e) {
       alert("Le scrutin a été enregistré")
       let nom = "<input type='name' id='ScrutinName' name='name' placeholder='Le nom du scrutin'><br>";
@@ -166,62 +167,76 @@
     [{nom:hamza,vote:1},...]
     */
    //Recupération des données dans HTML
-    let elect = []
-    var inputs = $(".electeur");
-    for(var i = 0; i < inputs.length; i++){
+   let elect = []
+   var inputs = $(".electeur");
+   for(var i = 0; i < inputs.length; i++){
     elect.push($(inputs[i]).val());
-    }
-    let procus = []
-    var selects = $(".Procuration");
-    for(var i = 0; i < selects.length; i++){
-    procus.push($(selects[i]).find(":selected").text());
-    }
-    $.ajax({
-      method: "GET",
-      url: "votants.php",
-      data: { "electeurs": elect,"procurations":procus}
-    }).done(function (e) {
-      console.log(e);
-    }).fail(function(e) {
-    });
   }
+  let procus = []
+  var selects = $(".Procuration");
+  for(var i = 0; i < selects.length; i++){
+    procus.push($(selects[i]).find(":selected").text());
+  }
+  $.ajax({
+    method: "GET",
+    url: "votants.php",
+    data: { "electeurs": elect,"procurations":procus}
+  }).done(function (e) {
+    console.log(e);
+  }).fail(function(e) {
+  });
+}
 // inspiré de https://stackoverflow.com/questions/19706046/how-to-read-an-external-local-json-file-in-javascript
 
-  function readTextFile(file, callback) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function() {
-        if (rawFile.readyState === 4 && rawFile.status == "200") {
-            callback(rawFile.responseText);
-        }
+function readTextFile(file, callback) {
+  var rawFile = new XMLHttpRequest();
+  rawFile.overrideMimeType("application/json");
+  rawFile.open("GET", file, true);
+  rawFile.onreadystatechange = function() {
+    if (rawFile.readyState === 4 && rawFile.status == "200") {
+      callback(rawFile.responseText);
     }
-    rawFile.send(null);
+  }
+  rawFile.send(null);
 }
 
 var voteaffiche = false;
 function showVote(){
   if(voteaffiche){}else{
-  readTextFile("scrutins.json", function(text){
-    var data = JSON.parse(text);
-    data["options"].forEach((data) =>{
-      $("#showVote").append("<input type='text' name='les_options' value ='"+data+"'readonly><br>");
-    })
-    voteaffiche = true;
-});
-}
+    readTextFile("scrutins.json", function(text){
+      var data = JSON.parse(text);
+      data["options"].forEach((data) =>{
+        $("#showVote").append("<input type='text' name='les_options' value ='"+data+"'readonly><br>");
+      })
+      voteaffiche = true;
+    });
+  }
 }
 var elecaffiche = false;
 function showElec(){
   if(elecaffiche){}else{
-  readTextFile("scrutins.json", function(text){
-    var data = JSON.parse(text);
-    data["votants"].forEach((data) =>{
-      $("#showElec").append("<input type='text' name='les_options' value ='"+data["name"]+"'readonly><br>");
-    })
-    elecaffiche = true;
-});
+    readTextFile("scrutins.json", function(text){
+      var data = JSON.parse(text);
+      data["votants"].forEach((data) =>{
+        $("#showElec").append("<input type='text' name='les_options' value ='"+data["name"]+"'readonly><br>");
+      })
+      elecaffiche = true;
+    });
+  }
 }
+var scrutinsaffiche = false;
+function showScrutin(){
+  if(scrutinsaffiche){}else{
+    readTextFile("listepredef.json", function(text){
+     var data = JSON.parse(text);
+     data.forEach((data) =>{
+      var keys = Object.keys(data);
+      console.log(keys[0])
+      $("#Choix").append("<option  value='"+keys[0]+"'>"+keys[0]+"</option>")
+    })
+     scrutinsaffiche = true;
+   });
+  }
 }
 //zindex
 </script>
@@ -288,39 +303,45 @@ function showElec(){
             <tr>
               <td>
                 <input class="option" type="text" name="test"><input type="checkbox" name="select"></td>
-            </tr>
-          </table>
-        </div>
+              </tr>
+            </table>
+          </div>
 
-        <div class="validation">
+          <div class="validation">
             <button onclick="recupererScutin()">Valider le scrutin</button>
+          </div>
         </div>
-      </div>
 
 
         <div id="Invite" class="tabcontent">
+          <div>Choix Liste de votant:
+            <select id ="Choix">
+              <option value=""></option>
+            </select>
+            <button onclick="showScrutin()"> Click</button>
+          </div>
           <div> <b>C) Electeurs</b> <br>
             <input type="button" class="add" value="Ajouter une ligne" onclick="addElecteur()">
             <button type="button" class="delete" onclick="delElecteur()">Supprimer une ligne</button>
             <table class="invit">
               <tr>
-              <th>Nom</th>
-              <th>Procuration</th>
+                <th>Nom</th>
+                <th>Procuration</th>
               </tr>
               <tr>
                 <td><input class="electeur" type="text" name="test"><input type="checkbox" name="select"></td>
                 <td>
-                    <select class="Procuration">
+                  <select class="Procuration">
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
-                    </select>
-               </td>
+                  </select>
+                </td>
               </tr>
             </table>
             <div class="validationElec">
-            <button onclick="rajoutElecteur()">Enregister les Electeur</button>
-        </div>
+              <button onclick="rajoutElecteur()">Enregister les Electeur</button>
+            </div>
           </div>
         </div>
         <div id="Vote" class="tabcontent">
@@ -335,7 +356,7 @@ function showElec(){
           <h3>Les Votants</h3>
           <p>Contenu :</p>
           <div id="showElec"></div>
-            <button onclick="showElec()">Afficher les participants</button>
+          <button onclick="showElec()">Afficher les participants</button>
         </div>
 
 
