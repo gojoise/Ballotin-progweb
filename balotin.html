@@ -240,7 +240,15 @@ function showListVot(){
   }
 }
 function validListVot(){
-  let nameList =$(selects[i]).find(":selected").text()
+  let nameList =$("#Choix").find(":selected").text();
+  $.ajax({
+    method: "GET",
+    url: "preVot.php",
+    data: { "name":nameList}
+  }).done(function (e) {
+    console.log(e);
+  }).fail(function(e) {
+  });
 }
 
 
@@ -324,8 +332,7 @@ function validListVot(){
             <select id ="Choix">
               <option value=""></option>
             </select>
-            <button onclick="showListVot
-          ()"> Click</button>
+            <button onclick="validListVot()"> Click</button>
           </div>
           <div> <b>C) Electeurs</b> <br>
             <input type="button" class="add" value="Ajouter une ligne" onclick="addElecteur()">
