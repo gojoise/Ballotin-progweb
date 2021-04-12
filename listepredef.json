@@ -1,0 +1,11 @@
+[
+    {"Profs":["fred","oliver"]
+    }
+    ,
+    {"eleves":["mathieu","hamza"]
+    },
+    {"Animal":["Lion","Chien","Chat","Lapin"]
+    },
+    {"Marque":["AUDI","BMW","Renault","Fiat"]
+    }
+]
