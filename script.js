@@ -111,7 +111,7 @@ function delOption() {
 };
 
 function addElecteur() {
-    var ligne = "<tr><td><input class='electeur' type='text' name='test'><input type='checkbox' name='select'></td><td></label><select class='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>";
+    var ligne = "<tr><td><input class='electeur' type='text' name='test' placeholder ='Veuillez enter un mail'><input type='checkbox' name='select'></td><td></label><select class='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>";
 
     $("table.invit").append(ligne);
 }
@@ -170,13 +170,17 @@ function rajoutElecteur() {
     for (var i = 0; i < selects.length; i++) {
         procus.push($(selects[i]).find(":selected").text());
     }
+
     $.ajax({
         method: "GET",
         url: "votants.php",
         data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
         console.log(e);
+        $("#Vote").click();
     }).fail(function (e) {
+         console.log(e);
+        $("#message").html("<span class='ko'> Error: network problem </span>");
     });
 }
 // inspiré de https://stackoverflow.com/questions/19706046/how-to-read-an-external-local-json-file-in-javascript
@@ -290,4 +294,21 @@ function allScrutins(){
     });
 }
 function closeScrutin() {
+}
+
+
+function inputElement(){
+
+        readTextFile("scrutins.json", function (text) {
+            var data = JSON.parse(text);
+            
+            data.forEach((data) => {
+                data["options"].forEach((opt) => {
+
+                $("#showElem").append(" <div class='poll-area'><input type='checkbox' name='poll' id='opt-1'><label for='opt-1' class='opt-1'><div class='row'><div class='column'><span class='circle'></span><span class='text'>"+opt+"</span></div> </label></div>");
+            })  
+           });
+        });
+    
+
 }
