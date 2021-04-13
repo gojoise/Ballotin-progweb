@@ -25,7 +25,7 @@ class vot{
 for($i=0;$i< count($arrVot);$i=$i+1){
     $vo = new vot();
     $vo->name=$arrVot[$i];
-    $vo->nbVotes = $arrProc[$i];
+    $vo->nbVotes = $arrProc[$i]+1;
     array_push($toPut["votants"], $vo);
 }
 
