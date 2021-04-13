@@ -80,7 +80,7 @@ function openTab(evt, tabName) {
     }
     //Une fois que tout est remis à 'zéro'
     document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
-    evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
+    evt.target.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
 }
 /*
       $(document).ready(function() {
