@@ -5,26 +5,23 @@ init();
 function init() {
     autologin();
     showListVot();
-    $(document).ready(function () {
-        if(Profilename!=null){
-            votableScrutins()
-            ownedScrutins()
-            allScrutins()
-        }
-    })
 }
 function isConnected() {
     $(".box-init").css("display", "none");
     $(".box-vote").css("display", "initial");
     // Get the element with id="defaultOpen" and click on it
     document.getElementById('defaultOpen').click();
+    votableScrutins()
+    ownedScrutins()
+    allScrutins()
 }
 
 function autologin() {
     $(document).ready(function () {
         if (localStorage.getItem("mail") != null) {
-            isConnected();
+            
             Profilename = localStorage.getItem("mail")
+            isConnected();
             console.log("autooooooo")
         } else {
             console.log("no COOKKIEEE")
@@ -162,6 +159,7 @@ function rajoutElecteur() {
     [{nom:hamza,vote:1},...]
     */
     //Recupération des données dans HTML
+    let nameScr=$("#owned").find(":selected").text()
     let elect = []
     var inputs = $(".electeur");
     for (var i = 0; i < inputs.length; i++) {
@@ -175,7 +173,7 @@ function rajoutElecteur() {
     $.ajax({
         method: "GET",
         url: "votants.php",
-        data: { "electeurs": elect, "procurations": procus }
+        data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
         console.log(e);
     }).fail(function (e) {
