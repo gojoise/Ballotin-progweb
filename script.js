@@ -11,6 +11,12 @@ function isConnected() {
     $(".box-vote").css("display", "initial");
     // Get the element with id="defaultOpen" and click on it
     document.getElementById('defaultOpen').click();
+    update()
+}
+function update(){
+    $("#votable").html("<option value=''></option>")
+    $("#owned").html("<option value=''></option>")
+    $("#all").html("<option value=''></option>")
     votableScrutins()
     ownedScrutins()
     allScrutins()
@@ -80,7 +86,7 @@ function openTab(evt, tabName) {
     }
     //Une fois que tout est remis à 'zéro'
     document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
-    evt.currentTarget.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
+    evt.target.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
 }
 /*
       $(document).ready(function() {
@@ -149,6 +155,8 @@ function recupererScutin() {
         $("#opti").html(option);
         $("#invite").click();
 
+        update()
+
     }).fail(function (e) {
         console.log(e);
         $("#message").html("<span class='ko'> Error: network problem </span>");
@@ -170,17 +178,13 @@ function rajoutElecteur() {
     for (var i = 0; i < selects.length; i++) {
         procus.push($(selects[i]).find(":selected").text());
     }
-
     $.ajax({
         method: "GET",
         url: "votants.php",
         data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
-        console.log(e);
-        $("#Vote").click();
+        update();
     }).fail(function (e) {
-         console.log(e);
-        $("#message").html("<span class='ko'> Error: network problem </span>");
     });
 }
 // inspiré de https://stackoverflow.com/questions/19706046/how-to-read-an-external-local-json-file-in-javascript
@@ -295,20 +299,19 @@ function allScrutins(){
 }
 function closeScrutin() {
 }
-
-
 function inputElement(){
 
-        readTextFile("scrutins.json", function (text) {
-            var data = JSON.parse(text);
-            
-            data.forEach((data) => {
-                data["options"].forEach((opt) => {
+    readTextFile("scrutins.json", function (text) {
+        var data = JSON.parse(text);
+        
+        data.forEach((data) => {
+            data["options"].forEach((opt) => {
 
-                $("#showElem").append(" <div class='poll-area'><input type='checkbox' name='poll' id='opt-1'><label for='opt-1' class='opt-1'><div class='row'><div class='column'><span class='circle'></span><span class='text'>"+opt+"</span></div> </label></div>");
-            })  
-           });
-        });
-    
+            $("#showElem").append(" <div class='poll-area'><input type='checkbox' name='poll' id='opt-1'><label for='opt-1' class='opt-1'><div class='row'><div class='column'><span class='circle'></span><span class='text'>"+opt+"</span></div> </label></div>");
+        })  
+       });
+    });
+
 
 }
+

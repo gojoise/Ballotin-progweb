@@ -18,6 +18,7 @@ $scr->organisateur = $profile;
 $scr->question = $question;
 $scr->options = $arrOpt;
 $scr->votants = [];
+$scr->closed = false;
 
 
 $json_string = file_get_contents("scrutins.json");
