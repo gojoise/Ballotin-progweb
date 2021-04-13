@@ -18,7 +18,7 @@ foreach ($json as $index => $obj) {
 }
 
 $toReasign=array_search($toPut,$json);
-unset($json[$toReasign]);
+
 class vot{
 
 }
@@ -29,7 +29,9 @@ for($i=0;$i< count($arrVot);$i=$i+1){
     array_push($toPut["votants"], $vo);
 }
 
-$json[$toReasign]=$toPut;
+unset($json[$toReasign]);
+$json=array_values($json);
+array_push($json,$toPut);
 
 
 $strNew = json_encode($json);
