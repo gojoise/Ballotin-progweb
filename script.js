@@ -11,6 +11,12 @@ function isConnected() {
     $(".box-vote").css("display", "initial");
     // Get the element with id="defaultOpen" and click on it
     document.getElementById('defaultOpen').click();
+    update()
+}
+function update(){
+    $("#votable").html("<option value=''></option>")
+    $("#owned").html("<option value=''></option>")
+    $("#all").html("<option value=''></option>")
     votableScrutins()
     ownedScrutins()
     allScrutins()
@@ -149,6 +155,8 @@ function recupererScutin() {
         $("#opti").html(option);
         $("#invite").click();
 
+        update()
+
     }).fail(function (e) {
         console.log(e);
         $("#message").html("<span class='ko'> Error: network problem </span>");
@@ -175,7 +183,7 @@ function rajoutElecteur() {
         url: "votants.php",
         data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
-        console.log(e);
+        update();
     }).fail(function (e) {
     });
 }
