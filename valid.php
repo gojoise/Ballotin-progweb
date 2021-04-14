@@ -8,6 +8,12 @@ $arrOpt = $_GET["options"];
 /*Inspiré de 
 https://scoutapm.com/blog/php-json_encode-serialize-php-objects-to-json
 */
+
+
+if($name == "" || $question == "" || $arrOpt = null){
+
+}else{
+    
 class scrutin {
 
 }
@@ -29,4 +35,7 @@ array_push($json, $scr);
 $strNew = json_encode($json);
 file_put_contents("scrutins.json", $strNew);
     
+}
+
+
 ?>
