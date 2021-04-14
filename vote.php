@@ -9,48 +9,63 @@ class A{
 class B{
 }
 
-function putVote($obj,$one,$two){
+function putVote($sous,$scrutin,$optionglobal){
 	$jsonstring=file_get_contents("results.json");
 	$json=json_decode($jsonstring,true);
 	
-	$toIncr=null;
-	
-	$nbOpt=count($obj["options"]);
-	$numOpt=array_search($two,$obj["options"]);
+	$resToIncr=null;
+	$nbOpt=count($sous["options"]);
+	$numOpt=array_search($optionglobal,$sous["options"]);
 	//On regarde si le resultat existe déjà
 	foreach ($json as $key => $obj) {
-		if($obj["name"]==$one){
-			$toIncr=$obj;//On le récup
+		if($obj["name"]==$scrutin){
+			$resToIncr=$obj;//On le récup
+			$resToIncrIndex=$key; //ainsi que l'index
 		}
 	}
 	//Si il existe on le modifie
-	if($toIncr!=null){
-		$toDel=array_search($json,$toIncr);
+	if($resToIncr!=null){
+		
+		/*resToIncr = Array ( [name] => second [res] => 
+							Array ( [0] => Array ( [D] => 0 ) 
+									[1] => Array ( [E] => 1 ) 
+									[2] => Array ( [F] => 0 ) 
+								) 
+						)
+		resofToIncr = Array ( [0] => Array ( [D] => 0 ) 
+							[1] => Array ( [E] => 1 ) 
+							[2] => Array ( [F] => 0 ) 
+						)
+		*/
+		$resofToIncr=$resToIncr["res"];
+		foreach ($resofToIncr as $index => $value) {
+			if(key($value)==$optionglobal){
+				$save = $value;
+				unset($resofToIncr[$index]);
+				$resofToIncr=array_values($resofToIncr);
+
+				$save[$optionglobal]++;
+				array_push($resofToIncr,$save);
+			}		
+		}
+		$toDel=array_search($resToIncr,$json);
+		$resToIncr["res"]=$resofToIncr;
 		unset($json[$toDel]);
 		$json=array_values($json);
-		
-		foreach ($toIncr["res"] as $index => $OBJopt) {
-			foreach ($OBJopt as $value) {
-				if(key($OBJopt) == $two){
-					$toplus=array_search($value,$toIncr["res"][$numOpt]);
-				}
-			}
-		}
-		$toIncr["res"][$numOpt][$toplus]++;
-		array_push($json,$toIncr);
+		array_push($json,$resToIncr);
 	//Sinon on créé le résultat pour l'ajouter dans le tableau
 	}else{
 		$resPut = new A();
-		$resPut->name = $one;
+		$resPut->name = $scrutin;
 		$resPut->res = [];
 		for ($i=0; $i <$nbOpt ; $i++) { 
 			$op = new B();
 			if($i==$numOpt){
-				$optName = $obj["options"][$i];
+				$optName = $sous["options"][$i];
 				$op->$optName=1;
 				array_push($resPut->res,$op);
 			}else{
-				$optName = $obj["options"][$i];
+				$optName = $sous["options"][$i];
 				$op->$optName=0;
 				array_push($resPut->res,$op);
 			}
