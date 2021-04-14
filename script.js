@@ -329,7 +329,6 @@ function inputElement(){
 
 function vote(){
     var ele = document.getElementsByName('opt');
-    readTextFile("scrutins.json", function (text) {
         let nameOpt;
         for(i = 0; i < ele.length; i++) {
                 if(ele[i].checked){
@@ -337,24 +336,17 @@ function vote(){
                 }
 
             }
-        var data = JSON.parse(text);
         let nameScr=$("#votable").find(":selected").text();
-        Profilename
         
-        data.forEach((data) => {
-            if(nameScr == data["name"]){
-                data["votants"].forEach((opt) => {
-                    if(opt["name"] == Profilename && opt["nbVotes"] >=0){
-                        opt["nbVotes"].val()--
-                        console.log(opt)
-                    }
-            
-        });
-        }
-
-     
-       
+        $.ajax({
+            method: "GET",
+            url: "vote.php",
+            data: { "profile": Profilename,"opt" : nameOpt,"Scrutin":nameScr}
+        }).done(function (e) {
+            console.log(e)
+    }).fail(function (e) {
     });
 
-})
+
+
 }

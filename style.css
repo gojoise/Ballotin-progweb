@@ -189,3 +189,16 @@ height: 100px;
 select{
 	max-width: 100px;
 }
+.but-elec {
+	border-radius:50%;
+  color:#000!important;
+  background-color:#ccc!important;
+  }
+  
+  .but-elec:hover {
+	border-radius:50%;
+  font-size:15px!important;
+  color: #fff!important;
+  background-color:#009688!important;
+  
+  }
