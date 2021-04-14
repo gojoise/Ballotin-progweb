@@ -19,6 +19,7 @@ function update(){
     $("#all").html("<option value=''></option>")
     votableScrutins()
     ownedScrutins()
+    ownedScrutins2()
     allScrutins()
 }
 
@@ -293,6 +294,22 @@ function ownedScrutins(){
     });
 }
 
+
+function ownedScrutins2(){
+    $.ajax({
+        method: "GET",
+        url: "getScrutin.php",
+        data: { "profile": Profilename,"action" : "owner"}
+    }).done(function (e) {
+        console.log(e)
+        let array = JSON.parse(e)
+        array.forEach((elements) => {
+            $("#owned2").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
+        })
+    }).fail(function (e) {
+    });
+}
+
 function allScrutins(){
     $.ajax({
         method: "GET",
@@ -308,6 +325,25 @@ function allScrutins(){
     });
 }
 function closeScrutin() {
+    
+    readTextFile("results.json", function (text) {
+        var data = JSON.parse(text);
+        let nameScr=$("#owned2").find(":selected").text()
+        if (nameScr == ""){}else{
+            $("#fini").html("")
+            $("#fini").append("<tr><th>Option</th><th>Reponses</th></tr><tr><div id ='fini'></div></tr>")
+        data.forEach((data) => {
+            if (nameScr == data["name"]) {
+
+                data["res"].forEach((opt) =>{
+                   console.log(opt[Object.keys(opt)])
+                   $("#fini").append("<tr><td><input type='text' name='les_options' value ='" + Object.keys(opt) + "'readonly><button class='but-elec'>"+opt[Object.keys(opt)]+"</button></td></tr>")
+                })
+    
+            }
+        })
+    }
+    })
 }
 
 
