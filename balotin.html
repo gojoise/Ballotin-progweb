@@ -90,13 +90,13 @@
             <select id ="owned">
               <option value=""></option>
             </select>
-            <button> Click</button>
+            
           </div><br>
           <div>Choix Liste de votant:
-            <select id ="Choix">
+            <select onclick="validListVot()" id ="Choix">
               <option value=""></option>
             </select>
-            <button onclick="validListVot()"> Click</button>
+            
           </div><br>
           <div> <b>C) Electeurs</b><br><br>
             <input type="button" class="add" value="Ajouter une ligne" onclick="addElecteur()">
@@ -119,28 +119,29 @@
         </div>
         <div id="Vote" class="tabcontent"><br>
           <div>Choix du Scrutin:
-            <select id ="votable">
+            <select id ="votable" onclick="inputElement()">
               <option value=""></option>
             </select>
-            <button onclick="inputElement()"> Click</button>
+            
           </div><br>
           <h3>Voter</h3>
           <p>Contenu :</p>
           <div id = "showElem">
           </div>
-          <button onclick="showVote()">Click pour afficher les votes</button>
+          <button onclick="vote()">Click pour voter</button>
         </div>
         <div id="Participation" class="tabcontent"><br>
           <div>Choix du Scrutin:
-            <select id ="all">
+            <select id ="all" onclick="showElec()">
               <option value=""></option>
             </select>
-            <button> Click</button>
+            
           </div><br>
           <h3>Les Votants</h3>
           <p>Contenu :</p>
           <div id="showElec"></div>
-          <button onclick="showElec()">Afficher les participants</button>
+
+          <button>Afficher la participation</button>
         </div>
 
 

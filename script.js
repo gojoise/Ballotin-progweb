@@ -199,6 +199,7 @@ function readTextFile(file, callback) {
     }
     rawFile.send(null);
 }
+/*
 var voteaffiche = false;
 function showVote() {
     if (voteaffiche) { } else {
@@ -211,17 +212,22 @@ function showVote() {
         });
     }
 }
-var elecaffiche = false;
+*/ 
 function showElec() {
-    if (elecaffiche) { } else {
+    $("#showElec").html("")
         readTextFile("scrutins.json", function (text) {
             var data = JSON.parse(text);
-            data["votants"].forEach((data) => {
-                $("#showElec").append("<input type='text' name='les_options' value ='" + data["name"] + "'readonly><br>");
+            let nameScr=$("#all").find(":selected").text()
+            data.forEach((data) => {
+                data["votants"].forEach((elec) => {
+                        if(nameScr == data["name"]){
+                $("#showElec").append("<input type='text' name='les_options' value ='" + elec["name"] + "'readonly><button class='but-elec'>"+elec["nbVotes"]+"</button><br>");
+           }
             })
-            elecaffiche = true;
+            })
+            
         });
-    }
+   
 }
 var scrutinsaffiche = false;
 function showListVot() {
@@ -299,19 +305,56 @@ function allScrutins(){
 }
 function closeScrutin() {
 }
-function inputElement(){
 
+var inputelement = false;
+function inputElement(){
+    $("#showElem").html("")
     readTextFile("scrutins.json", function (text) {
         var data = JSON.parse(text);
-        
+        let nameScr=$("#votable").find(":selected").text()
         data.forEach((data) => {
+            if(nameScr == data["name"]){
             data["options"].forEach((opt) => {
-
-            $("#showElem").append(" <div class='poll-area'><input type='checkbox' name='poll' id='opt-1'><label for='opt-1' class='opt-1'><div class='row'><div class='column'><span class='circle'></span><span class='text'>"+opt+"</span></div> </label></div>");
-        })  
+                
+            $("#showElem").append("<input type='radio' id="+opt+" name='opt'><label for="+opt+"> "+opt+"</label><br>");
+        })
+        }  
        });
+
+       
     });
-
-
+    
 }
 
+
+function vote(){
+    var ele = document.getElementsByName('opt');
+    readTextFile("scrutins.json", function (text) {
+        let nameOpt;
+        for(i = 0; i < ele.length; i++) {
+                if(ele[i].checked){
+                nameOpt = ele[i].id;
+                }
+
+            }
+        var data = JSON.parse(text);
+        let nameScr=$("#votable").find(":selected").text();
+        Profilename
+        
+        data.forEach((data) => {
+            if(nameScr == data["name"]){
+                data["votants"].forEach((opt) => {
+                    if(opt["name"] == Profilename && opt["nbVotes"] >=0){
+                        opt["nbVotes"].val()--
+                        console.log(opt)
+                    }
+            
+        });
+        }
+
+     
+       
+    });
+
+})
+}
