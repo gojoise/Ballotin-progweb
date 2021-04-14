@@ -163,11 +163,14 @@ function recupererScutin() {
         $("#message").html("<span class='ko'> Error: network problem </span>");
     });
 }
+var flag = false
+var flag2 = false
 function rajoutElecteur() {
     /*
     [{nom:hamza,vote:1},...]
     */
     //Recupération des données dans HTML
+
     let nameScr=$("#owned").find(":selected").text()
     let elect = []
     var inputs = $(".electeur");
@@ -184,7 +187,18 @@ function rajoutElecteur() {
         url: "votants.php",
         data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
+        if(flag){if(flag2){}else{
+            $("#reussi").html("")
+            $("#rate").append("Vous ne pouvez plus rajouter d'électeurs")
+            flag2 = true
+        }
+    }else{
         update();
+
+        $("#reussi").append("Les électeurs on bien était enregistré")
+
+    }
+    flag = true
     }).fail(function (e) {
     });
 }

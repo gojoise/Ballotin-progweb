@@ -206,3 +206,11 @@ select{
 #err{
   color: red;
 }
+
+#rate{
+	color: red;
+}
+
+#reussi{
+	color: green;
+}
