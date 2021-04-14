@@ -16,6 +16,7 @@ function isConnected() {
 function update(){
     $("#votable").html("<option value=''></option>")
     $("#owned").html("<option value=''></option>")
+    $("#owned2").html("<option value=''></option>")
     $("#all").html("<option value=''></option>")
     votableScrutins()
     ownedScrutins()
@@ -164,7 +165,6 @@ function recupererScutin() {
     });
 }
 var flag = false
-var flag2 = false
 function rajoutElecteur() {
     /*
     [{nom:hamza,vote:1},...]
@@ -187,18 +187,17 @@ function rajoutElecteur() {
         url: "votants.php",
         data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
-        if(flag){if(flag2){}else{
+        if(nameScr == ""){
+                $("#reussi").html("")
+                $("#rate").html("")      
+                $("#rate").append("Vous ne pouvez plus rajouter d'électeurs")
+        }else{
+            update();
+            $("#rate").html("")
             $("#reussi").html("")
-            $("#rate").append("Vous ne pouvez plus rajouter d'électeurs")
-            flag2 = true
+            $("#reussi").append("Les électeurs on bien était enregistré")
+            flag = true
         }
-    }else{
-        update();
-
-        $("#reussi").append("Les électeurs on bien était enregistré")
-
-    }
-    flag = true
     }).fail(function (e) {
     });
 }
