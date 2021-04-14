@@ -28,7 +28,7 @@ function autologin() {
             
             Profilename = localStorage.getItem("mail")
             isConnected();
-            console.log("autooooooo")
+             console.log("autooooooo")
         } else {
             console.log("no COOKKIEEE")
         }
@@ -251,14 +251,18 @@ function validListVot() {
         url: "preVot.php",
         data: { "name": nameList }
     }).done(function (e) {
+        if (e == "") {}else{
         let array = JSON.parse(e)
         $("table.invit").html("")
+        $("table.invit").append(" <tr><th>Nom</th><th>Procuration</th></tr><tr><div id ='check'></div></tr>")
         array.forEach((elements) => {
 
             $("table.invit").append("<tr><td><input value = '" + elements + "' class='electeur' type='text' name='test'><input type='checkbox' name='select'></td><td></label><select class='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>")
         })
+    }
     }).fail(function (e) {
     });
+
 }
 function votableScrutins(){
     $.ajax({
