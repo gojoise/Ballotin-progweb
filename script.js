@@ -306,7 +306,7 @@ function allScrutins(){
 function closeScrutin() {
 }
 
-var inputelement = false;
+
 function inputElement(){
     $("#showElem").html("")
     readTextFile("scrutins.json", function (text) {
@@ -326,7 +326,7 @@ function inputElement(){
     
 }
 
-
+var err = false;
 function vote(){
     var ele = document.getElementsByName('opt');
         let nameOpt;
@@ -343,7 +343,8 @@ function vote(){
             url: "vote.php",
             data: { "profile": Profilename,"opt" : nameOpt,"Scrutin":nameScr}
         }).done(function (e) {
-            console.log(e)
+            $("#err").html("")
+            $("#err").append("<b>"+e+"</b>")
     }).fail(function (e) {
     });
 
