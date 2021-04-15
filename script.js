@@ -3,16 +3,16 @@ let Profilename;
 init();
 
 
-function init() {
+function init() { //Quand on lance le site on appelle ces deux fonctions
     autologin();
     showListVot();
 }
-function isConnected() { // fonction pour lors de la connection changer l'affichage des box
+function isConnected() { // fonction qui lors de la connection change l'affichage des box
     $(".box-init").css("display", "none");
     $(".box-vote").css("display", "initial");
     // Get the element with id="defaultOpen" and click on it
-    document.getElementById('defaultOpen').click();
-    update()
+    document.getElementById('defaultOpen').click();//Clique sur create pour avoir cet acceuil
+    update()//met à jour les choix de scrutin
 }
 function update(){ // fonction qui met a jour les selects des "choix du srcutin:"" du site
     $("#votable").html("<option value=''></option>")
@@ -26,20 +26,18 @@ function update(){ // fonction qui met a jour les selects des "choix du srcutin:
 
 function autologin() {
     $(document).ready(function () {
-        if (localStorage.getItem("mail") != null) {
-            
-            Profilename = localStorage.getItem("mail")
-            isConnected();
-             console.log("autooooooo")
+        if (localStorage.getItem("mail") != null) {//Si il existe un login dans le localStorage
+
+            Profilename = localStorage.getItem("mail") //on met le profil à jour
+            isConnected();//on termine la connexion
         } else {
-            console.log("no COOKKIEEE")
         }
     })
 }
 
 function locStorage(login) {
     localStorage.setItem("mail", login);
-    //mettre une date d'expiration ?
+    //Pas de date d'expiration !
 }
 
 function connect() {
@@ -52,9 +50,9 @@ function connect() {
     }).done(function (e) {
         console.log(e)
         if (e == "Ok.") {
-            locStorage(mail);
-            Profilename = mail
-            isConnected();
+            locStorage(mail);//enregistrement du cookie
+            Profilename = mail //enregistrement utilisateur dans le site
+            isConnected(); //Actions à réaliser une fois connecté
         }
         if (e == "Erreur")
             $("#message").html("<span class='ko'> Error: mail ou mot de Mot-de-passe incorrect </span> <style> span{ color : red} </style>")
@@ -118,8 +116,9 @@ function delElecteur() { // fonction qui supprimeqzzssss des ligne pour les Elec
         }
     });
 };
-
+//Sauvegarde le scrutin
 function recupererScutin() {
+    //Récupère les champs de HTML dans des variables
     let name = $("#ScrutinName").val();
     let ques = $("#Question").val();
     let opt = []
@@ -139,11 +138,13 @@ function recupererScutin() {
 
         let option = "<b>C) Option</b> <br><input type='button' class='add' value='Ajouter une ligne' onclick='addOption()'><button type='button' class='delete' onclick='delOption()'>Supprimer une ligne</button><table class='optionlist'><th>Sélectionner vos Option</th><tr><td><input class='option' type='text' name='test'><input type='checkbox' name='select'></td><td> </tr></table>";
 
+        //Reset de champs de l'html
         $("#nom").html(nom);
         $("#question").html(question);
         $("#opti").html(option);
+        //on envoie l'utilisateur dans le menu inviter
         $("#invite").click();
-
+        //On refresh la liste des scrutins dans choix scrutin:
         update()
 
     }).fail(function (e) {
@@ -155,7 +156,7 @@ var flag = false
 var flag2 = false
 function rajoutElecteur() {
     /*
-    [{nom:hamza,vote:1},...]
+    [{nom:hamza,vote:1},...] // données à envoyer à PHP
     */
     //Recupération des données dans HTML
 
@@ -202,35 +203,21 @@ function readTextFile(file, callback) {
     }
     rawFile.send(null);
 }
-/*
-var voteaffiche = false;
-function showVote() {
-    if (voteaffiche) { } else {
-        readTextFile("scrutins.json", function (text) {
-            var data = JSON.parse(text);
-            data["options"].forEach((data) => {
-                $("#showVote").append("<input type='text' name='les_options' value ='" + data + "'readonly><br>");
-            })
-            voteaffiche = true;
-        });
-    }
-}
-*/ 
 function showElec() { // cette fonction montre les electeur par rapport au scrutin choisit
-    $("#showElec").html("") 
+    $("#showElec").html("")
         readTextFile("scrutins.json", function (text) { // cette ligne lit le fichier scrutin.json ou est stockée toutes nos scrutin
-            var data = JSON.parse(text); 
+            var data = JSON.parse(text);
             let nameScr=$("#all").find(":selected").text() // selectionne le scrutin choisit dans le input
             data.forEach((data) => { // notre scrutin etant un tableau on verrifie dans l'ensemble des scrutin
                 data["votants"].forEach((elec) => { // est dans l'ensemble des votants
-                        if(nameScr == data["name"]){ // Si le nom du scrutin a le meme nom que celui selectionner 
+                        if(nameScr == data["name"]){ // Si le nom du scrutin a le meme nom que celui selectionner
                 $("#showElec").append("<input type='text' name='les_options' value ='" + elec["name"] + "'readonly><button class='but-elec'>"+elec["nbVotes"]+"</button><br>"); // on affiche le scrutin
            }
             })
             })
-            
+
         });
-   
+
 }
 var scrutinsaffiche = false;
 function showListVot() {
@@ -246,7 +233,7 @@ function showListVot() {
         });
     }
 }
-
+//Recupère la liste predef de votants demandée pour préremplir les champs
 function validListVot() {
     let nameList = $("#Choix").find(":selected").text();
     $.ajax({
@@ -254,7 +241,7 @@ function validListVot() {
         url: "preVot.php",
         data: { "name": nameList }
     }).done(function (e) {
-        if (e == "") {}else{
+        if (e == "") {}else{ //Protection pour éviter l'erreur quand le select est vide
         let array = JSON.parse(e)
         $("table.invit").html("")
         $("table.invit").append(" <tr><th>Nom</th><th>Procuration</th></tr><tr><div id ='check'></div></tr>")
@@ -267,13 +254,16 @@ function validListVot() {
     });
 
 }
+/*votableScrutins ownedScrutins ownedScrutins2et allScrutins sont des fonctions qui font toutes la même chose
+un changement la requete ajax différente pour que le PHP renvoie une partie des scrutins différente
+autre changement l'id où l'on met le resultat
+*/
 function votableScrutins(){
     $.ajax({
         method: "GET",
         url: "getScrutin.php",
         data: { "profile": Profilename,"action" : "votable"}
     }).done(function (e) {
-        console.log(e)
         let array = JSON.parse(e)
         array.forEach((elements) => {
             $("#votable").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
@@ -287,7 +277,6 @@ function ownedScrutins(){
         url: "getScrutin.php",
         data: { "profile": Profilename,"action" : "owner"}
     }).done(function (e) {
-        console.log(e)
         let array = JSON.parse(e)
         array.forEach((elements) => {
             $("#owned").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
@@ -303,7 +292,6 @@ function ownedScrutins2(){
         url: "getScrutin.php",
         data: { "profile": Profilename,"action" : "owner"}
     }).done(function (e) {
-        console.log(e)
         let array = JSON.parse(e)
         array.forEach((elements) => {
             $("#owned2").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
@@ -318,7 +306,6 @@ function allScrutins(){
         url: "getScrutin.php",
         data: { "profile": Profilename,"action" : "all"}
     }).done(function (e) {
-        console.log(e)
         let array = JSON.parse(e)
         array.forEach((elements) => {
             $("#all").append("<option  value='" + elements["name"] + "'>" + elements["name"] + "</option>")
@@ -326,8 +313,8 @@ function allScrutins(){
     }).fail(function (e) {
     });
 }
-function closeScrutin() { // fonction qui ferme le scrutin 
-    
+function closeScrutin() { // fonction qui ferme le scrutin
+
     readTextFile("results.json", function (text) {
         var data = JSON.parse(text);
         let nameScr=$("#owned2").find(":selected").text()
@@ -335,13 +322,13 @@ function closeScrutin() { // fonction qui ferme le scrutin
             $("#fini").html("")
             $("#fini").append("<tr><th>Option</th><th>Reponses</th></tr><tr><div id ='fini'></div></tr>")
         data.forEach((data) => { // on parcours tous les scrutin disponible
-            if (nameScr == data["name"]) { // Si le scrutin selectionner correspond au scrutin de notre json 
+            if (nameScr == data["name"]) { // Si le scrutin selectionner correspond au scrutin de notre json
 
                 data["res"].forEach((opt) =>{
                    console.log(opt[Object.keys(opt)])
                    $("#fini").append("<tr><td><input type='text' name='les_options' value ='" + Object.keys(opt) + "'readonly><button class='but-elec'>"+opt[Object.keys(opt)]+"</button></td></tr>") // on affiche les resultat du scrutin
                 })
-    
+
             }
         })
     }
@@ -357,29 +344,29 @@ function inputElement(){ // fonction qui affiche tous les options du scrutin dis
         data.forEach((data) => {
             if(nameScr == data["name"]){
             data["options"].forEach((opt) => {
-                
+
             $("#showElem").append("<input type='radio' id="+opt+" name='opt'><label for="+opt+"> "+opt+"</label><br>");
         })
-        }  
+        }
        });
 
-       
+
     });
-    
+
 }
 
 var err = false;
-function vote(){ // fonction qui permet au Electeur de vote 
+function vote(){ // fonction qui permet au Electeur de vote
     var ele = document.getElementsByName('opt');
         let nameOpt;
-        for(i = 0; i < ele.length; i++) {  // prend l'option selectionner 
+        for(i = 0; i < ele.length; i++) {  // prend l'option selectionner
                 if(ele[i].checked){
                 nameOpt = ele[i].id;
                 }
 
             }
         let nameScr=$("#votable").find(":selected").text();
-        
+
         $.ajax({
             method: "GET",
             url: "vote.php",
