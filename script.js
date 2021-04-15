@@ -184,7 +184,7 @@ function rajoutElecteur() {
     }else{
         update();
 
-        $("#reussi").append("Les électeurs on bien était enregistré")
+        $("#reussi").append("Les électeurs ont bien été enregistré")
 
     }
     flag = true
