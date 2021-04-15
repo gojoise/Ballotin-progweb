@@ -10,8 +10,8 @@ https://scoutapm.com/blog/php-json_encode-serialize-php-objects-to-json
 */
 
 
-if($name == "" || $question == "" || $arrOpt = null){
-
+if($name == "" || $question == "" || $arrOpt == null){ 
+    // Petite coquille "$arrOpt = null" pendant la soutenance ce qui faisait mettre options à null dans le json
 }else{
     
 class scrutin {
