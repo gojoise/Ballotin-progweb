@@ -195,7 +195,7 @@ function rajoutElecteur() {
             update();
             $("#rate").html("")
             $("#reussi").html("")
-            $("#reussi").append("Les électeurs on bien était enregistré")
+            $("#reussi").append("Les électeurs on bien été enregistré")
             flag = true
         }
     }).fail(function (e) {
@@ -213,20 +213,7 @@ function readTextFile(file, callback) {
     }
     rawFile.send(null);
 }
-/*
-var voteaffiche = false;
-function showVote() {
-    if (voteaffiche) { } else {
-        readTextFile("scrutins.json", function (text) {
-            var data = JSON.parse(text);
-            data["options"].forEach((data) => {
-                $("#showVote").append("<input type='text' name='les_options' value ='" + data + "'readonly><br>");
-            })
-            voteaffiche = true;
-        });
-    }
-}
-*/ 
+
 function showElec() {
     $("#showElec").html("")
         readTextFile("scrutins.json", function (text) {
