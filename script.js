@@ -17,6 +17,7 @@ function isConnected() { // fonction qui lors de la connection change l'affichag
 function update(){ // fonction qui met a jour les selects des "choix du srcutin:"" du site
     $("#votable").html("<option value=''></option>")
     $("#owned").html("<option value=''></option>")
+    $("#owned2").html("<option value=''></option>")
     $("#all").html("<option value=''></option>")
     votableScrutins()
     ownedScrutins()

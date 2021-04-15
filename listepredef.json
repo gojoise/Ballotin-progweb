@@ -1,8 +1,8 @@
 [
-    {"Profs":["fred","oliver"]
+    {"Profs":["fred","oliver","miguel"]
     }
     ,
-    {"eleves":["mathieu","hamza"]
+    {"eleves":["mathieu@gmail.com","hamza@gmail.com"]
     },
     {"Animal":["Lion","Chien","Chat","Lapin"]
     },
