@@ -1,3 +1,4 @@
+
 let Profilename;
 init();
 
@@ -6,17 +7,16 @@ function init() {
     autologin();
     showListVot();
 }
-function isConnected() {
+function isConnected() { // fonction pour lors de la connection changer l'affichage des box
     $(".box-init").css("display", "none");
     $(".box-vote").css("display", "initial");
     // Get the element with id="defaultOpen" and click on it
     document.getElementById('defaultOpen').click();
     update()
 }
-function update(){
+function update(){ // fonction qui met a jour les selects des "choix du srcutin:"" du site
     $("#votable").html("<option value=''></option>")
     $("#owned").html("<option value=''></option>")
-    $("#owned2").html("<option value=''></option>")
     $("#all").html("<option value=''></option>")
     votableScrutins()
     ownedScrutins()
@@ -90,27 +90,14 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block"; //On met le contenu qui nous intéresse affiché == $("#tabName").css("display", "block");
     evt.target.className += " active"; //On met le bouton correspondant en active (le css s'applique alors)
 }
-/*
-      $(document).ready(function() {
-    $(".add").click(function() {
-        var ligne = "<tr><td><input type='text' name='test'><input type='checkbox' name='select'></td><td>";
-        $("table.test").append(ligne);
-    });
-    $(".delete").click(function() {
-        $("table.test").find('input[name="select"]').each(function() {
-            if ($(this).is(":checked")) {
-                $(this).parents("table.test tr").remove();
-            }
-        });
-    });
-  }); */
 
-function addOption() {
+
+function addOption() { // fonction qui ajoute des ligne aux Options
     var ligne = "<tr><td><input class='option' type='text' name='test'><input type='checkbox' name='select'></td><td>";
-    $("table.optionlist").append(ligne);
+    $("table.optionlist").append(ligne); // cela ce place dans la table avec pour class optionList et a chaque appel de fonction on insert la ligne declarer ci-dessus
 }
 
-function delOption() {
+function delOption() { // fonction qui supprime des ligne au Option
     $("table.optionlist").find('input[name="select"]').each(function () {
         if ($(this).is(":checked")) {
             $(this).parents("table.optionlist tr").remove();
@@ -118,13 +105,13 @@ function delOption() {
     });
 };
 
-function addElecteur() {
+function addElecteur() { // fonction qui ajoute des ligne pour les Electeur
     var ligne = "<tr><td><input class='electeur' type='text' name='test' placeholder ='Veuillez enter un mail'><input type='checkbox' name='select'></td><td></label><select class='Procuration'><option value='0'>0</option><option value='1'>1</option><option value='2'>2</option></select></td></tr>";
 
     $("table.invit").append(ligne);
 }
 
-function delElecteur() {
+function delElecteur() { // fonction qui supprimeqzzssss des ligne pour les Electeur
     $("table.invit").find('input[name="select"]').each(function () {
         if ($(this).is(":checked")) {
             $(this).parents("table.invit tr").remove();
@@ -165,6 +152,7 @@ function recupererScutin() {
     });
 }
 var flag = false
+var flag2 = false
 function rajoutElecteur() {
     /*
     [{nom:hamza,vote:1},...]
@@ -187,17 +175,18 @@ function rajoutElecteur() {
         url: "votants.php",
         data: { "name":nameScr, "electeurs": elect, "procurations": procus }
     }).done(function (e) {
-        if(nameScr == ""){
-                $("#reussi").html("")
-                $("#rate").html("")      
-                $("#rate").append("Vous ne pouvez plus rajouter d'électeurs")
-        }else{
-            update();
-            $("#rate").html("")
+        if(flag){if(flag2){}else{
             $("#reussi").html("")
-            $("#reussi").append("Les électeurs on bien était enregistré")
-            flag = true
+            $("#rate").append("Vous ne pouvez plus rajouter d'électeurs")
+            flag2 = true
         }
+    }else{
+        update();
+
+        $("#reussi").append("Les électeurs on bien était enregistré")
+
+    }
+    flag = true
     }).fail(function (e) {
     });
 }
@@ -213,16 +202,29 @@ function readTextFile(file, callback) {
     }
     rawFile.send(null);
 }
-
-function showElec() {
-    $("#showElec").html("")
+/*
+var voteaffiche = false;
+function showVote() {
+    if (voteaffiche) { } else {
         readTextFile("scrutins.json", function (text) {
             var data = JSON.parse(text);
-            let nameScr=$("#all").find(":selected").text()
-            data.forEach((data) => {
-                data["votants"].forEach((elec) => {
-                        if(nameScr == data["name"]){
-                $("#showElec").append("<input type='text' name='les_options' value ='" + elec["name"] + "'readonly><button class='but-elec'>"+elec["nbVotes"]+"</button><br>");
+            data["options"].forEach((data) => {
+                $("#showVote").append("<input type='text' name='les_options' value ='" + data + "'readonly><br>");
+            })
+            voteaffiche = true;
+        });
+    }
+}
+*/ 
+function showElec() { // cette fonction montre les electeur par rapport au scrutin choisit
+    $("#showElec").html("") 
+        readTextFile("scrutins.json", function (text) { // cette ligne lit le fichier scrutin.json ou est stockée toutes nos scrutin
+            var data = JSON.parse(text); 
+            let nameScr=$("#all").find(":selected").text() // selectionne le scrutin choisit dans le input
+            data.forEach((data) => { // notre scrutin etant un tableau on verrifie dans l'ensemble des scrutin
+                data["votants"].forEach((elec) => { // est dans l'ensemble des votants
+                        if(nameScr == data["name"]){ // Si le nom du scrutin a le meme nom que celui selectionner 
+                $("#showElec").append("<input type='text' name='les_options' value ='" + elec["name"] + "'readonly><button class='but-elec'>"+elec["nbVotes"]+"</button><br>"); // on affiche le scrutin
            }
             })
             })
@@ -324,20 +326,20 @@ function allScrutins(){
     }).fail(function (e) {
     });
 }
-function closeScrutin() {
+function closeScrutin() { // fonction qui ferme le scrutin 
     
     readTextFile("results.json", function (text) {
         var data = JSON.parse(text);
         let nameScr=$("#owned2").find(":selected").text()
-        if (nameScr == ""){}else{
+        if (nameScr == ""){}else{ // cas ou le scrutin selectionner est vide (le cas ou il y a pas de scrutin)
             $("#fini").html("")
             $("#fini").append("<tr><th>Option</th><th>Reponses</th></tr><tr><div id ='fini'></div></tr>")
-        data.forEach((data) => {
-            if (nameScr == data["name"]) {
+        data.forEach((data) => { // on parcours tous les scrutin disponible
+            if (nameScr == data["name"]) { // Si le scrutin selectionner correspond au scrutin de notre json 
 
                 data["res"].forEach((opt) =>{
                    console.log(opt[Object.keys(opt)])
-                   $("#fini").append("<tr><td><input type='text' name='les_options' value ='" + Object.keys(opt) + "'readonly><button class='but-elec'>"+opt[Object.keys(opt)]+"</button></td></tr>")
+                   $("#fini").append("<tr><td><input type='text' name='les_options' value ='" + Object.keys(opt) + "'readonly><button class='but-elec'>"+opt[Object.keys(opt)]+"</button></td></tr>") // on affiche les resultat du scrutin
                 })
     
             }
@@ -347,7 +349,7 @@ function closeScrutin() {
 }
 
 
-function inputElement(){
+function inputElement(){ // fonction qui affiche tous les options du scrutin disponibles dans le input assosier a l'id showElem
     $("#showElem").html("")
     readTextFile("scrutins.json", function (text) {
         var data = JSON.parse(text);
@@ -367,10 +369,10 @@ function inputElement(){
 }
 
 var err = false;
-function vote(){
+function vote(){ // fonction qui permet au Electeur de vote 
     var ele = document.getElementsByName('opt');
         let nameOpt;
-        for(i = 0; i < ele.length; i++) {
+        for(i = 0; i < ele.length; i++) {  // prend l'option selectionner 
                 if(ele[i].checked){
                 nameOpt = ele[i].id;
                 }
@@ -387,6 +389,4 @@ function vote(){
             $("#err").append("<b>"+e+"</b>")
     }).fail(function (e) {
     });
-
-
 }
