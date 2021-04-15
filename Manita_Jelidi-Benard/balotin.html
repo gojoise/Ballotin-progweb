@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+
+<head>
+
+  <title>Page d'acceuil</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="script.js"type="text/javascript">
+//zindex
+</script>
+</head>
+
+<body>
+  <div class= "box-init">
+    <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt= "logo universite-paris-saclay" height="120" ></a>
+
+    <h1> L3 Informatique </h1>
+
+    <div id = "formulaire">
+      <div>
+        <label for="mail">e-mail :</label>
+        <input type="email" id="mail" name="user_mail" placeholder="Votre é-mail ">
+      </div>
+      <div>
+        <label for="password">Mot-de-passe :</label>
+        <input type="password" id="pass" name="password"
+        minlength="8" required placeholder="Votre Mot-de-passe">
+
+      </div>
+      <div class="button">
+        <button onclick="connect()"> Connectez-vous
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <div class= "box-vote">
+    <a href="https://www.universite-paris-saclay.fr/"><img src="logo.jpeg" alt= "logo universite-paris-saclay" height="120" ></a>
+
+    <h2>Vote en ligne</h2>
+    <p>Cliquez sur les boutons de menu à gauche !</p>
+
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Create')" id="defaultOpen">Créer</button>
+      <button id ="invite" class="tablinks" onclick="openTab(event, 'Invite')">Inviter</button>
+      <button class="tablinks" onclick="openTab(event, 'Vote')">Voter</button>
+      <button class="tablinks" onclick="openTab(event, 'Participation')">Participation</button>
+      <button class="tablinks" onclick="openTab(event, 'Fermer scrutin')">Fermer scrutin</button>
+      <button class="tablinks" onclick="disconnect(event)">Se deconnecter</button>
+    </div>
+
+    <div id="Create" class="tabcontent">
+      <p>La clé privée sera conservée dans VOTRE navigateur<br>
+        Vous devez garder cette page ouverte ou revenir ici<br>avec le même navigateur web pour clore le scrutin</p><br>
+
+        <b>A)Nom du scrutin: </b>
+        <div id ="nom">
+          <input type="name" id="ScrutinName" name="name" placeholder="Le nom du scrutin">
+        </div><br>
+
+        <div id ="question"><b>B) Question : </b>
+          <textarea placeholder="Quel est votre Question?" rows="3" cols="40" id="Question"></textarea>
+        </div><br>
+
+        <div id= "opti"> <b>C) Option</b> <br>
+          <input type="button" class="add" value="Ajouter une ligne" onclick="addOption()">
+          <button type="button" class="delete" onclick="delOption()">Supprimer une ligne</button>
+          <table class="optionlist">
+            <th>Sélectionner vos Option</th>
+            <tr>
+              <td>
+                <input class="option" type="text" name="test"><input type="checkbox" name="select"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="validation">
+            <button onclick="recupererScutin()">Valider le scrutin</button>
+          </div>
+    
+        </div>
+
+
+        <div id="Invite" class="tabcontent"><br>
+          <div>Choix du Scrutin:
+            <select id ="owned">
+              <option value=""></option>
+            </select>
+            
+          </div><br>
+          <div>Choix Liste de votant:
+            <select onclick="validListVot()" id ="Choix">
+              <option value=""></option>
+            </select>
+            
+          </div><br>
+          <div> <b>Electeurs</b><br><br>
+            <input type="button" class="add" value="Ajouter une ligne" onclick="addElecteur()">
+            <button type="button" class="delete" onclick="delElecteur()">Supprimer une ligne</button><br>
+            <table class="invit">
+              <tr>
+                <th>Nom</th>
+                <th>Procuration</th>
+              </tr>
+              <tr>
+                <div id ="check">
+                
+                </div>
+              </tr>
+            </table>
+            <div class="validationElec">
+              <button onclick="rajoutElecteur()">Enregister les Electeur</button>
+              <div id ="reussi"></div>
+              <div id ="rate"></div>
+            </div>
+          </div>
+        </div>
+        <div id="Vote" class="tabcontent"><br>
+          <div>Choix du Scrutin:
+            <select id ="votable" onclick="inputElement()">
+              <option value=""></option>
+            </select>
+            
+          </div><br>
+          <h3>Voter</h3>
+          <p>Contenu :</p>
+          <div id = "showElem">
+          </div>
+          <button onclick="vote()">Click pour voter</button>
+          <div id="err"></div>
+        </div>
+        <div id="Participation" class="tabcontent"><br>
+          <div>Afficher la <br> Participation du Scrutin:
+            <select id ="all" onclick="showElec()">
+              <option value=""></option>
+            </select>
+            
+          </div><br>
+          <h3>Les Votants</h3>
+          <p>Contenu :</p>
+          <div id="showElec"></div>
+
+          
+        </div>
+
+
+        <div id="Fermer scrutin" class="tabcontent"><br>
+          <div>Choix du Scrutin:
+            <select id ="owned2">
+              <option value=""></option>
+            </select>
+          
+          </div>
+          <div id ="fini">
+          <br>
+
+          <p>Etes-vous sur de vouloir fermer le scrutin ?</p>
+
+          <button onclick="closeScrutin()">Oui</button> 
+        </div>
+        </div>
+
+
+      </div>
+
+
+    </body>
+    </html>

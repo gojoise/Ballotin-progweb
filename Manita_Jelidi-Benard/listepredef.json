@@ -1,0 +1,11 @@
+[
+    {"Profs":["fred","oliver","miguel"]
+    }
+    ,
+    {"eleves":["mathieu@gmail.com","hamza@gmail.com"]
+    },
+    {"Animal":["Lion","Chien","Chat","Lapin"]
+    },
+    {"Marque":["AUDI","BMW","Renault","Fiat"]
+    }
+]
