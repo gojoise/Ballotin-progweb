@@ -17,7 +17,7 @@ if($name == "" || $question == "" || $arrOpt == null){
 class scrutin {
 
 }
-
+//On créé un objet à la volée pour le mettre dans le JSON
 $scr= new scrutin();
 $scr->name = $name;
 $scr->organisateur = $profile;

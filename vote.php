@@ -8,7 +8,7 @@ class A{
 }
 class B{
 }
-
+/*Fonction qui met le resultat dans le JSON*/
 function putVote($sous,$scrutin,$optionglobal){
 	$jsonstring=file_get_contents("results.json");
 	$json=json_decode($jsonstring,true);
@@ -25,19 +25,7 @@ function putVote($sous,$scrutin,$optionglobal){
 	}
 	//Si il existe on le modifie
 	if($resToIncr!=null){
-		
-		/*resToIncr = Array ( [name] => second [res] => 
-							Array ( [0] => Array ( [D] => 0 ) 
-									[1] => Array ( [E] => 1 ) 
-									[2] => Array ( [F] => 0 ) 
-								) 
-						)
-		resofToIncr = Array ( [0] => Array ( [D] => 0 ) 
-							[1] => Array ( [E] => 1 ) 
-							[2] => Array ( [F] => 0 ) 
-						)
-		*/
-		$resofToIncr=$resToIncr["res"];
+		$resofToIncr=$resToIncr["res"]; //Attribut res donc l'array contenant les {options: nombre}
 		foreach ($resofToIncr as $index => $value) {
 			if(key($value)==$optionglobal){
 				$save = $value;
@@ -60,13 +48,13 @@ function putVote($sous,$scrutin,$optionglobal){
 		$resPut->res = [];
 		for ($i=0; $i <$nbOpt ; $i++) { 
 			$op = new B();
-			if($i==$numOpt){
+			if($i==$numOpt){//Si le numéro de l'option est celui qui nous intéresse
 				$optName = $sous["options"][$i];
-				$op->$optName=1;
+				$op->$optName=1; // On set le résultat de l'option à 1
 				array_push($resPut->res,$op);
 			}else{
 				$optName = $sous["options"][$i];
-				$op->$optName=0;
+				$op->$optName=0; //sinon on le met à 0
 				array_push($resPut->res,$op);
 			}
 		}
@@ -74,7 +62,6 @@ function putVote($sous,$scrutin,$optionglobal){
 	}
 	$strNew = json_encode($json);
 	file_put_contents("results.json", $strNew);
-
 }
 
 $jsonstring = file_get_contents("scrutins.json");
@@ -83,14 +70,14 @@ $tomodify = null;
 foreach ($json as $obj) {
 	if($scr == $obj["name"]){
 		foreach ($obj["votants"] as $index => $value) {
-			if($value["name"] ==$profile && $value["nbVotes"] > 0){
+			if($value["name"] ==$profile && $value["nbVotes"] > 0){//On cherche le votant dans la liste des votants si il lui reste des votes on le sauvegarde
 				$tomodify = $value;
 			}
 		}
 	}
 }
 
-if($tomodify != null){
+if($tomodify != null){ // Si il a été trouvé on prend le scrutin avec ce votant à modifier
 	foreach ($json as $index => $obj) {
 		if($obj["name"] == $scr){
 			$toPut=$obj;
@@ -99,8 +86,8 @@ if($tomodify != null){
 	$toReasign=array_search($toPut,$json);
 	$toReasign2=array_search($tomodify,$toPut["votants"]);
 	
-	$tomodify["nbVotes"]--;
-	putVote($toPut,$scr,$option);
+	$tomodify["nbVotes"]--;//on décrémente le nb vote du votant
+	putVote($toPut,$scr,$option);//On ajoute le vote aux résultats
 	
 	unset($json[$toReasign]["votants"][$toReasign2]);
 	$json[$toReasign]["votants"]=array_values($json[$toReasign]["votants"]);
@@ -111,7 +98,7 @@ if($tomodify != null){
 	//$json=array_values($json);
 	$strNew = json_encode($json);
 	file_put_contents("scrutins.json", $strNew);
-}else {
+}else {//Sinon on ne fait rien
 	echo("Vos votes sont épuisés");
 }
 

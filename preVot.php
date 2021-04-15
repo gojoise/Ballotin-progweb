@@ -10,7 +10,7 @@ if($name == ""){
 }else{
 	foreach($json as $key=>$obj){
     foreach ($obj as $arr) {
-        if(key($obj)==$name) echo json_encode($arr);
+        if(key($obj)==$name) echo json_encode($arr); //Donne l'array des votants de la liste des votants à ajax
     }
 }
 }

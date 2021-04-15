@@ -11,7 +11,7 @@ https://scoutapm.com/blog/php-json_encode-serialize-php-objects-to-json
 $json_string = file_get_contents("scrutins.json");
 $json = json_decode($json_string, true);
 
-if($name != ""){
+if($name != ""){ // le nom du scrutin n'est pas vide 
     foreach ($json as $index => $obj) {
         if($obj["name"] == $name){
             $toPut=$obj;
@@ -24,15 +24,16 @@ if($name != ""){
     
     }
     for($i=0;$i< count($arrVot);$i=$i+1){
+        //On créé un nouveau votant à chaque elem du tableau
         $vo = new vot();
         $vo->name=$arrVot[$i];
         $vo->nbVotes = $arrProc[$i]+1;
         array_push($toPut["votants"], $vo);
     }
     
-    unset($json[$toReasign]);
-    $json=array_values($json);
-    array_push($json,$toPut);
+    unset($json[$toReasign]);//On supprime le scrutin à remettre
+    $json=array_values($json);//On reindexe
+    array_push($json,$toPut);//On remet le nouveau scrutin
 }
 
 
